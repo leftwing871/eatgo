@@ -2,7 +2,9 @@ package kr.co.fastcampus.eatgo.interfaces;
 
 import kr.co.fastcampus.eatgo.domain.RestaurantRepository;
 import kr.co.fastcampus.eatgo.domain.RestaurantRepositoryImpl;
-import org.junit.Test;
+//import org.junit.Test;
+import org.junit.jupiter.api.Test;
+//If you're using JUnit 5+, make sure you import the @Test annotation from the correct library
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -23,8 +25,10 @@ public class RestaurantControllerTest {
 
     @Autowired
     private MockMvc mvc;
-//    주입된 MockMvc는 컨트롤러 테스트시 모든 의존성을 로드하는 것이아닌 RestController관련된 빈만 로드하여 가벼운 MVC 테스트를 수행합니다.
+//    주입된 MockMvc는 컨트롤러 테스트시 모든 의존성을 로드하는 것이아닌 RestController 관련된 빈만 로드하여 가벼운 MVC 테스트를 수행합니다.
 
+
+    //@SpyBean을 이용하면 Controller에 원하는 객체를 주입해줄 수 있다.
     @SpyBean(RestaurantRepositoryImpl.class)
     private RestaurantRepository restaurantRepository;
 

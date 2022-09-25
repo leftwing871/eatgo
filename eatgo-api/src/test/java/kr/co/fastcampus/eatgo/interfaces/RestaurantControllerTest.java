@@ -1,5 +1,7 @@
 package kr.co.fastcampus.eatgo.interfaces;
 
+import kr.co.fastcampus.eatgo.domain.MenuItemRepository;
+import kr.co.fastcampus.eatgo.domain.MenuItemRepositoryImpl;
 import kr.co.fastcampus.eatgo.domain.RestaurantRepository;
 import kr.co.fastcampus.eatgo.domain.RestaurantRepositoryImpl;
 //import org.junit.Test;
@@ -27,10 +29,12 @@ public class RestaurantControllerTest {
     private MockMvc mvc;
 //    주입된 MockMvc는 컨트롤러 테스트시 모든 의존성을 로드하는 것이아닌 RestController 관련된 빈만 로드하여 가벼운 MVC 테스트를 수행합니다.
 
-
     //@SpyBean을 이용하면 Controller에 원하는 객체를 주입해줄 수 있다.
     @SpyBean(RestaurantRepositoryImpl.class)
     private RestaurantRepository restaurantRepository;
+
+    @SpyBean(MenuItemRepositoryImpl.class)
+    private MenuItemRepository menuItemRepository;
 
     @Test
     public void list() throws Exception {//예외가 있을 수 있다는 표
@@ -65,6 +69,7 @@ public class RestaurantControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("\"id\":1004")))
                 .andExpect(content().string(containsString("\"name\":\"Bob zip\"")))
+                .andExpect(content().string(containsString("Kimchi")))
         ;
 
         mvc.perform(get("/restaurants/2020"))

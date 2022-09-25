@@ -1,5 +1,8 @@
 package kr.co.fastcampus.eatgo.interfaces;
 
+import kr.co.fastcampus.eatgo.application.RestaurantService;
+import kr.co.fastcampus.eatgo.domain.MenuItem;
+import kr.co.fastcampus.eatgo.domain.MenuItemRepository;
 import kr.co.fastcampus.eatgo.domain.Restaurant;
 import kr.co.fastcampus.eatgo.domain.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,16 +10,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 public class RestaurantController {
 
     @Autowired
-    private RestaurantRepository repository;// = new RestaurantRepository();
+    private RestaurantService restaurantService;
+
+//    @Autowired
+//    private RestaurantRepository restaurantRepository;// = new RestaurantRepository();
 
     //private RestaurantRepository = new RestaurantRepository(); <-- DI 적용(@Autowired)
+    @Autowired
+    private MenuItemRepository menuItemRepository;
 
     @GetMapping("/restaurants")
     public List<Restaurant> list() {
@@ -25,7 +32,8 @@ public class RestaurantController {
 //        Restaurant restaurant = new Restaurant(1004L,"Bob zip", "Seoul");
 //        restaurants.add(restaurant);
 
-        List<Restaurant> restaurants = repository.findAll();
+        //List<Restaurant> restaurants = restaurantRepository.findAll();
+        List<Restaurant> restaurants = restaurantService.getRestaurants();
 
         return restaurants;
     }
@@ -53,7 +61,16 @@ public class RestaurantController {
 //        if (id == 2020L)
 //            restaurant = new Restaurant(id,"Cyber Food", "Seoul");
 
-        return repository.findById(id);
+
+        //Restaurant restaurant = restaurantRepository.findById(id);
+        Restaurant restaurant = restaurantService.getRestaurant(id);
+
+        List<MenuItem> menuItems = menuItemRepository.findAllByRestaurantId(id);
+
+        restaurant.setMenuItems(menuItems);
+        //restaurant.addMenuItem(new MenuItem("Kimchi"));
+
+        return restaurant;
 
 //        Restaurant x = restaurants.stream()
 //        .filter(r -> r.getId().equals(id))
